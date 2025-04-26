@@ -159,10 +159,13 @@ async def ask(update: Update, context):
     user_id = update.message.from_user.id
     args = context.args
 
+    logger.info(f"User {user_id} asked: {' '.join(args)}")
+
     if args:
         # Rate limiting
         current_time = time.time()
         if user_id in last_query_time and current_time - last_query_time[user_id] < config["rate_limit"]:
+            logger.info(f"User {user_id} is rate-limited. Last query time: {last_query_time[user_id]}")
             await update.message.reply_text("You must wait " + str(config["rate_limit"]) + " seconds before asking again.", reply_to_message_id=update.message.message_id)
             return
         last_query_time[user_id] = current_time
@@ -187,8 +190,12 @@ async def ask(update: Update, context):
         user_memory[user_id].append({"role": "assistant", "content": response, "model": model})
 
         await update.message.reply_text(response, reply_to_message_id=update.message.message_id)
+
+        logger.info(f"User {user_id} received response: {response}")
     else:
         await update.message.reply_text("Please provide a prompt after /ask.", reply_to_message_id=update.message.message_id)
+
+        logger.info(f"User {user_id} did not provide a prompt.")
 
 async def retry(update: Update, context):
     query = update.callback_query
