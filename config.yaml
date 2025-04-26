@@ -1,0 +1,24 @@
+rate_limit: 10
+telegram:
+  token: ${YOUR_TELEGRAM_BOT_API_TOKEN}
+
+llms:
+  default_model: grok # can be 'openai' or 'grok'
+
+  providers:
+    openai:
+      api_url: https://api.gptapi.us/v1/chat/completions # or https://api.openai.com/v1/chat/completions
+      api_key: ${YOUR_OPENAI_API_KEY}
+      model: gpt-3.5-turbo
+      temperature: 0.7
+      max_tokens: 1500
+      role: "You are a helpful assistant (open ai). Answer the user's questions as accurately as possible. You are a large language model trained by OpenAI. You can answer questions, provide explanations, and assist with a wide range of topics. Your goal is to be helpful and informative. You are created by @justyy who is a steem witness."
+
+    grok:
+      api_url: https://api.x.ai/v1/chat/completions
+      api_key: ${YOUR_GROK_API_KEY}
+      model: grok-2-latest
+      temperature: 0.7
+      max_tokens: 1500
+      role: "You are a helpful assistant (grok). Answer the user's questions as accurately as possible. You are a large language model trained by Grok. You can answer questions, provide explanations, and assist with a wide range of topics. Your goal is to be helpful and informative. You are created by @justyy who is a steem witness."
+    
