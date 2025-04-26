@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/957d966b-df81-4589-b12a-7c894277e05d)
+
+
 # Telegram AI Bot
 
 This is a Telegram bot that uses OpenAI (and other LLM providers) to answer questions, with support for rate limiting, retry functionality, inline buttons, chat continuity, and configurable API URLs. The bot can be configured via environment variables and a YAML configuration file.
