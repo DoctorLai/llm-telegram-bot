@@ -135,7 +135,7 @@ async def help(update: Update, context):
         "/help - This help message\n"
         "/ping - Check if the bot is online\n"
         "/ask [model] [prompt] - Ask a question to the bot\n"
-        "Inline Buttons for retry, new ask, and clear memory supported."
+        #"Inline Buttons for retry, new ask, and clear memory supported."
     )
     await update.message.reply_text(help_message, reply_to_message_id=update.message.message_id)
 
@@ -149,11 +149,10 @@ async def ping(update: Update, context):
     # Calculate latency after sending the "Pong!" response
     latency_ms = (time.time() - start_time) * 1000  # Convert to milliseconds
 
+    logger.info(f"Latency: {latency_ms:.2f} ms")
+
     # Reply with "Pong!" and the latency
     await update.message.reply_text(f"Pong! This message had a latency of {latency_ms:.2f} ms.", reply_to_message_id=update.message.message_id)
-
-    # Optionally, you can also print the latency for debugging/logging purposes
-    logger.info(f"Latency: {latency_ms:.2f} ms")
 
 async def ask(update: Update, context):
     user_id = update.message.from_user.id
@@ -189,55 +188,54 @@ async def ask(update: Update, context):
 
         user_memory[user_id].append({"role": "assistant", "content": response, "model": model})
 
+        logger.info(f"User {user_id} received response: {response}")
         await update.message.reply_text(response, reply_to_message_id=update.message.message_id)
 
-        logger.info(f"User {user_id} received response: {response}")
     else:
+        logger.info(f"User {user_id} did not provide a prompt.")
         await update.message.reply_text("Please provide a prompt after /ask.", reply_to_message_id=update.message.message_id)
 
-        logger.info(f"User {user_id} did not provide a prompt.")
+# async def retry(update: Update, context):
+#     query = update.callback_query
+#     await query.answer()
+#     user_id = query.from_user.id
+#     if user_id in user_memory and len(user_memory[user_id]) > 1:
+#         last_user_input = user_memory[user_id][-2]
+#         model = last_user_input.get("model", default_model)
+#         prompt = last_user_input.get("content", "")
+#         response = get_response(model, prompt)
+#         await query.message.reply_text(response)
+#     else:
+#         await query.message.reply_text("No previous question to retry.", reply_to_message_id=update.message.message_id)
 
-async def retry(update: Update, context):
-    query = update.callback_query
-    await query.answer()
-    user_id = query.from_user.id
-    if user_id in user_memory and len(user_memory[user_id]) > 1:
-        last_user_input = user_memory[user_id][-2]
-        model = last_user_input.get("model", default_model)
-        prompt = last_user_input.get("content", "")
-        response = get_response(model, prompt)
-        await query.message.reply_text(response)
-    else:
-        await query.message.reply_text("No previous question to retry.", reply_to_message_id=update.message.message_id)
+# async def new_ask(update: Update, context):
+#     await update.callback_query.message.reply_text("Please ask a new question with /ask [model] [prompt].")
 
-async def new_ask(update: Update, context):
-    await update.callback_query.message.reply_text("Please ask a new question with /ask [model] [prompt].")
+# async def clear_memory(update: Update, context):
+#     user_id = update.callback_query.from_user.id
+#     if user_id in user_memory:
+#         del user_memory[user_id]
+#         await update.callback_query.message.reply_text("Your memory has been cleared.", reply_to_message_id=update.message.message_id)
+#     else:
+#         await update.callback_query.message.reply_text("No memory to clear.", reply_to_message_id=update.message.message_id)
 
-async def clear_memory(update: Update, context):
-    user_id = update.callback_query.from_user.id
-    if user_id in user_memory:
-        del user_memory[user_id]
-        await update.callback_query.message.reply_text("Your memory has been cleared.", reply_to_message_id=update.message.message_id)
-    else:
-        await update.callback_query.message.reply_text("No memory to clear.", reply_to_message_id=update.message.message_id)
-
-async def inline_buttons(update: Update, context):
-    keyboard = [
-        [InlineKeyboardButton("Retry", callback_data="retry"),
-         InlineKeyboardButton("New Ask", callback_data="new_ask"),
-         InlineKeyboardButton("Clear Memory", callback_data="clear_memory")]
-    ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    await update.message.reply_text("What would you like to do?", reply_markup=reply_markup)
+# async def inline_buttons(update: Update, context):
+#     keyboard = [
+#         [InlineKeyboardButton("Retry", callback_data="retry"),
+#          InlineKeyboardButton("New Ask", callback_data="new_ask"),
+#          InlineKeyboardButton("Clear Memory", callback_data="clear_memory")]
+#     ]
+#     reply_markup = InlineKeyboardMarkup(keyboard)
+#     await update.message.reply_text("What would you like to do?", reply_markup=reply_markup)
 
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("help", help))
 app.add_handler(CommandHandler("ping", ping))
 app.add_handler(CommandHandler("ask", ask))
-app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, inline_buttons))
-app.add_handler(CallbackQueryHandler(retry, pattern="retry"))
-app.add_handler(CallbackQueryHandler(new_ask, pattern="new_ask"))
-app.add_handler(CallbackQueryHandler(clear_memory, pattern="clear_memory"))
+#app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, inline_buttons))
+#app.add_handler(CallbackQueryHandler(retry, pattern="retry"))
+#app.add_handler(CallbackQueryHandler(new_ask, pattern="new_ask"))
+#app.add_handler(CallbackQueryHandler(clear_memory, pattern="clear_memory"))
 
 if __name__ == "__main__":
     app.run_polling()
