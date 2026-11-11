@@ -15,7 +15,7 @@ The request payload does not explicitly include the Telegram user ID, username, 
 - There is no conversation database or persisted chat history. Each question is independent.
 - The application retains user IDs and timestamps in memory for cooldown enforcement. Expired entries are removed when the next nonempty question is processed; stopping the process also clears them.
 - Telegram updates and request/response data exist in process memory while handled. Framework internals may retain operational metadata.
-- Application logs record startup, configuration failure categories, and request failure categories, not full prompts, answers, or keys. HTTP client INFO/DEBUG logs are suppressed by the normal entry point.
+- Application logs record startup, configuration failure categories, and request failure categories, not full prompts, answers, or keys. HTTP client INFO/DEBUG logs are suppressed by the normal entry point. However, Telegram framework startup errors or uncaught tracebacks may include a rejected bot token in a request URL; redact tokens before sharing or retaining such logs.
 - The code does not add analytics, browser cookies, or localStorage.
 
 Hosting providers, reverse proxies, custom logging, Telegram, and LLM providers can have their own storage and retention policies. This application cannot erase their copies or guarantee their retention periods.

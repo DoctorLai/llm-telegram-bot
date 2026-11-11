@@ -127,6 +127,17 @@ async def test_long_response_is_sent_in_order(settings, telegram_update, monkeyp
     assert messages == bot.split_message(response)
 
 
+@pytest.mark.parametrize("response", ["a" * 4096 + "\n", "a" * 4096 + "\n" * 4096 + "b"])
+async def test_ask_skips_whitespace_only_response_chunks(
+    response, settings, telegram_update, monkeypatch
+):
+    update, context, telegram_bot = telegram_update
+    monkeypatch.setattr(bot, "get_response", AsyncMock(return_value=response))
+    await bot.TelegramAssistant(settings).ask(update, context)
+    messages = [call.kwargs["text"] for call in telegram_bot.send_message.await_args_list]
+    assert messages == [chunk for chunk in bot.split_message(response) if chunk.strip()]
+
+
 @pytest.mark.parametrize("command", ["start", "help", "ping", "version", "ask", "providers"])
 async def test_updates_without_messages(settings, command):
     await getattr(bot.TelegramAssistant(settings), command)(Update(1), SimpleNamespace(args=[]))

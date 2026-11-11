@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -60,12 +61,25 @@ def test_ci_runs_quality_gate_and_builds_the_zip_and_container():
 def test_badges_workflow_writes_only_separate_branch(tmp_path):
     source = tmp_path / "source"
     remote = tmp_path / "remote.git"
+    shim_dir = tmp_path / "bin"
+    shim_dir.mkdir()
+    python_shim = shim_dir / "python"
+    python_shim.write_text(
+        f'#!/bin/sh\nexec {shlex.quote(sys.executable)} "$@"\n', encoding="utf-8"
+    )
+    python_shim.chmod(0o755)
     environment = {
         **os.environ,
         "GIT_CONFIG_NOSYSTEM": "1",
         "GIT_CONFIG_GLOBAL": os.devnull,
         "PYTHONPATH": str(ROOT),
-        "PATH": str(Path(sys.executable).parent) + os.pathsep + os.environ["PATH"],
+        "PATH": (
+            str(shim_dir)
+            + os.pathsep
+            + str(Path(sys.executable).parent)
+            + os.pathsep
+            + os.environ["PATH"]
+        ),
     }
 
     def git(*args, cwd=source):

@@ -160,15 +160,20 @@ def test_missing_release_file_fails_without_replacing_existing_output(release_so
 
 @pytest.mark.parametrize("kind", ["file", "directory"])
 def test_symlinks_are_not_distributed(release_source, tmp_path, kind):
-    if kind == "file":
-        target = release_source / "bot.py"
-        target.unlink()
-        target.symlink_to(build_release.ROOT / "bot.py")
-    else:
-        (release_source / "scripts").rename(release_source / "original-scripts")
-        (release_source / "scripts").symlink_to(
-            release_source / "original-scripts", target_is_directory=True
-        )
+    try:
+        if kind == "file":
+            target = release_source / "bot.py"
+            target.unlink()
+            target.symlink_to(build_release.ROOT / "bot.py")
+        else:
+            (release_source / "scripts").rename(release_source / "original-scripts")
+            (release_source / "scripts").symlink_to(
+                release_source / "original-scripts", target_is_directory=True
+            )
+    except OSError as error:
+        if getattr(error, "winerror", None) == 1314:
+            pytest.skip("Creating symlinks requires elevated privileges on this Windows system.")
+        raise
     with pytest.raises(ValueError, match="symlink"):
         build_release.build_release(release_source, tmp_path / "dist")
 

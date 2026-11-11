@@ -262,7 +262,8 @@ class TelegramAssistant:
             await self._reply(update, "provider_error")
             return
         for chunk in split_message(response):
-            await message.reply_text(chunk, reply_to_message_id=message.message_id)
+            if chunk.strip():
+                await message.reply_text(chunk, reply_to_message_id=message.message_id)
 
 
 async def on_error(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
