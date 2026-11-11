@@ -94,6 +94,8 @@ In groups, send commands addressed to the bot when needed, such as `/ask@your_bo
 
 [config.yaml](config.yaml) is the configuration source. `${VARIABLE}` references are expanded from the environment. `.env` is loaded from the configuration file's directory without overriding existing environment variables.
 
+An unset variable used as an entire value is treated as missing. Expansion happens once: literal dollar signs in supplied credentials or system prompts are not rejected or interpreted a second time.
+
 | Setting | Meaning |
 | --- | --- |
 | `telegram.token` | Required Telegram bot token |

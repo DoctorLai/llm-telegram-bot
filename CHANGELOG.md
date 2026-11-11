@@ -21,6 +21,7 @@ Application versions use UTC dates (`YYYY-MM-DD`). There is no npm or PyPI relea
 - npm commands resolve the active/project virtual environment or `python3`/`python` automatically, so they work on systems without a `python` alias.
 - Replaced the invalid OpenAI completions call and blocking HTTP calls with asynchronous OpenAI-compatible chat requests.
 - Added startup configuration validation and allowed unused providers to omit credentials.
+- Preserve literal dollar signs in API keys and system prompts while still detecting unset whole-value environment references.
 - Reject empty questions after provider selection without consuming the cooldown.
 - Split long responses within Telegram's UTF-16 message limit without splitting Unicode characters.
 - A failed typing indicator is logged without aborting the question; failed error notifications are also logged without exposing raw exceptions.

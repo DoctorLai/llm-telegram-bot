@@ -51,12 +51,15 @@ class ProviderError(Exception):
 
 
 def expand_env_vars(value: object) -> object:
-    """Expand environment variables recursively without changing scalar types."""
+    """Expand once; unset whole-value environment references become missing values."""
     if isinstance(value, dict):
         return {key: expand_env_vars(item) for key, item in value.items()}
     if isinstance(value, list):
         return [expand_env_vars(item) for item in value]
     if isinstance(value, str):
+        variable = re.fullmatch(r"\$(?:\{([A-Za-z_]\w*)\}|([A-Za-z_]\w*))", value.strip())
+        if variable and (variable[1] or variable[2]) not in os.environ:
+            return None
         return os.path.expandvars(value)
     return value
 
@@ -68,11 +71,7 @@ def _mapping(value: object, name: str) -> Mapping[str, object]:
 
 
 def _text(value: object, name: str) -> str:
-    if (
-        not isinstance(value, str)
-        or not value.strip()
-        or re.search(r"\$(?:\{[^}]*\}|[A-Za-z_]\w*)", value)
-    ):
+    if not isinstance(value, str) or not value.strip():
         raise ValueError(f"{name} must be set; check config.yaml and environment variables.")
     return value.strip()
 
@@ -108,8 +107,6 @@ def load_config(path: Path = CONFIG_PATH) -> Settings:
         if key_value is not None and not isinstance(key_value, str):
             raise ValueError(f"{name}.api_key must be a string.")
         key = (key_value or "").strip()
-        if "$" in key:
-            key = ""
         if name == default or key:
             key = _text(key, f"{name}.api_key")
         max_tokens = provider.get("max_tokens")

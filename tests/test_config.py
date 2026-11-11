@@ -21,6 +21,14 @@ def test_recursive_environment_expansion(monkeypatch):
     assert value == original
 
 
+@pytest.mark.parametrize(
+    "placeholder", ["${MISSING_VALUE}", "$MISSING_VALUE", " ${MISSING_VALUE} "]
+)
+def test_missing_whole_value_environment_references_are_missing_values(monkeypatch, placeholder):
+    monkeypatch.delenv("MISSING_VALUE", raising=False)
+    assert bot.expand_env_vars({"nested": [placeholder]}) == {"nested": [None]}
+
+
 def test_sample_config_defaults_and_optional_provider(config_path, monkeypatch):
     monkeypatch.delenv("YOUR_OPENAI_API_KEY")
     settings = bot.load_config(config_path)
@@ -46,6 +54,33 @@ def test_defaults_and_literal_dollar_in_system_prompt(config_path, config_data):
     settings = bot.load_config(config_path)
     assert settings.request_timeout == 30
     assert settings.providers["grok"].role == "Explain prices such as $5."
+
+
+def test_system_prompt_accepts_inline_math(config_path, config_data, monkeypatch):
+    monkeypatch.delenv("x", raising=False)
+    monkeypatch.delenv("y", raising=False)
+    role = "Use $x$ and $y$ for inline mathematics."
+    config_data["llms"]["providers"]["grok"]["role"] = role
+    config_path.write_text(yaml.safe_dump(config_data), encoding="utf-8")
+    assert bot.load_config(config_path).providers["grok"].role == role
+
+
+@pytest.mark.parametrize("provider", ["grok", "openai"])
+@pytest.mark.parametrize("key", ["example$key", "$LITERAL_KEY", "${LITERAL_KEY}"])
+def test_expanded_api_keys_are_not_reinterpreted_as_placeholders(
+    config_path, monkeypatch, provider, key
+):
+    monkeypatch.setenv("LITERAL_KEY", "do-not-expand-again")
+    monkeypatch.setenv(f"YOUR_{provider.upper()}_API_KEY", key)
+    assert bot.load_config(config_path).providers[provider].api_key == key
+
+
+def test_expanded_system_prompt_preserves_template_examples(config_path, config_data, monkeypatch):
+    role = "Explain the literal template ${USER_INPUT}."
+    monkeypatch.setenv("SYSTEM_ROLE", role)
+    config_data["llms"]["providers"]["grok"]["role"] = "${SYSTEM_ROLE}"
+    config_path.write_text(yaml.safe_dump(config_data), encoding="utf-8")
+    assert bot.load_config(config_path).providers["grok"].role == role
 
 
 @pytest.mark.parametrize(
