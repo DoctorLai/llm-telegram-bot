@@ -1,0 +1,11 @@
+{
+  "welcome": "Hello! Each question is sent independently; I do not keep chat history. You can ask once every {seconds} seconds.",
+  "help": "Commands:\n/start - Welcome\n/help - Show instructions\n/ping - Check availability\n/ask [provider] <question> - Ask a question\n/providers - List providers and models\n/version - Show the version\n\nExample: /ask What is AI?",
+  "providers": "Default provider: {default}\nProviders with a configured API key:\n{providers}\n\nUse /ask <provider> <question>.\nAvailability depends on the provider account.",
+  "pong": "Pong!",
+  "latency": "Reply latency: {milliseconds} ms.",
+  "version": "Version: {version}",
+  "empty_prompt": "Please provide a question after /ask or the provider name.",
+  "rate_limit": "Please wait {seconds} seconds between questions.",
+  "provider_error": "The request could not be completed. Please try again later or contact the bot operator."
+}

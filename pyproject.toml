@@ -1,0 +1,28 @@
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["bot.py", "localization.py", "scripts"]
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.coverage.run]
+branch = true
+source = ["bot", "localization", "scripts"]
+relative_files = true
+
+[tool.coverage.report]
+fail_under = 80
+precision = 2
+show_missing = true
+exclude_also = ['if __name__ == "__main__":']

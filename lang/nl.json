@@ -1,0 +1,11 @@
+{
+  "welcome": "Hallo! Elke vraag wordt apart verstuurd; ik bewaar geen chatgeschiedenis. Je kunt elke {seconds} seconden een vraag stellen.",
+  "help": "Opdrachten:\n/start - Welkom\n/help - Instructies\n/ping - Beschikbaarheid controleren\n/ask [aanbieder] <vraag> - Een vraag stellen\n/providers - Aanbieders en modellen tonen\n/version - Versie tonen\n\nVoorbeeld: /ask Wat is AI?",
+  "providers": "Standaardaanbieder: {default}\nAanbieders met een ingestelde API-sleutel:\n{providers}\n\nGebruik /ask <aanbieder> <vraag>.\nBeschikbaarheid hangt af van het account bij de aanbieder.",
+  "pong": "Pong!",
+  "latency": "Reactietijd: {milliseconds} ms.",
+  "version": "Versie: {version}",
+  "empty_prompt": "Schrijf een vraag na /ask of de naam van de aanbieder.",
+  "rate_limit": "Wacht {seconds} seconden tussen vragen.",
+  "provider_error": "Het verzoek kon niet worden voltooid. Probeer het later opnieuw of neem contact op met de beheerder van de bot."
+}

@@ -1,0 +1,11 @@
+{
+  "welcome": "Hallo! Jede Frage wird einzeln gesendet; ich speichere keinen Chatverlauf. Du kannst alle {seconds} Sekunden eine Frage stellen.",
+  "help": "Befehle:\n/start - Begrüßung\n/help - Anleitung\n/ping - Verfügbarkeit prüfen\n/ask [Anbieter] <Frage> - Eine Frage stellen\n/providers - Anbieter und Modelle anzeigen\n/version - Version anzeigen\n\nBeispiel: /ask Was ist KI?",
+  "providers": "Standardanbieter: {default}\nAnbieter mit konfiguriertem API-Schlüssel:\n{providers}\n\nVerwende /ask <Anbieter> <Frage>.\nDie Verfügbarkeit hängt vom Anbieterkonto ab.",
+  "pong": "Pong!",
+  "latency": "Antwortzeit: {milliseconds} ms.",
+  "version": "Version: {version}",
+  "empty_prompt": "Schreibe eine Frage nach /ask oder dem Anbieternamen.",
+  "rate_limit": "Warte bitte {seconds} Sekunden zwischen Fragen.",
+  "provider_error": "Die Anfrage konnte nicht abgeschlossen werden. Versuche es später erneut oder kontaktiere den Bot-Betreiber."
+}

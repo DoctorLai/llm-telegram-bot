@@ -1,0 +1,11 @@
+{
+  "welcome": "Halo! Setiap pertanyaan dikirim secara terpisah; saya tidak menyimpan riwayat percakapan. Anda dapat bertanya setiap {seconds} detik.",
+  "help": "Perintah:\n/start - Sambutan\n/help - Petunjuk\n/ping - Periksa ketersediaan\n/ask [penyedia] <pertanyaan> - Ajukan pertanyaan\n/providers - Lihat penyedia dan model\n/version - Lihat versi\n\nContoh: /ask Apa itu AI?",
+  "providers": "Penyedia bawaan: {default}\nPenyedia dengan kunci API yang dikonfigurasi:\n{providers}\n\nGunakan /ask <penyedia> <pertanyaan>.\nKetersediaan bergantung pada akun penyedia.",
+  "pong": "Aktif!",
+  "latency": "Waktu respons: {milliseconds} md.",
+  "version": "Versi: {version}",
+  "empty_prompt": "Tulis pertanyaan setelah /ask atau nama penyedia.",
+  "rate_limit": "Tunggu {seconds} detik di antara pertanyaan.",
+  "provider_error": "Permintaan tidak dapat diselesaikan. Coba lagi nanti atau hubungi pengelola bot."
+}

@@ -1,0 +1,11 @@
+{
+  "welcome": "¡Hola! Cada pregunta se envía de forma independiente; no guardo el historial. Puedes preguntar cada {seconds} segundos.",
+  "help": "Comandos:\n/start - Bienvenida\n/help - Instrucciones\n/ping - Comprobar disponibilidad\n/ask [proveedor] <pregunta> - Hacer una pregunta\n/providers - Ver proveedores y modelos\n/version - Ver la versión\n\nEjemplo: /ask ¿Qué es la IA?",
+  "providers": "Proveedor predeterminado: {default}\nProveedores con clave de API configurada:\n{providers}\n\nUsa /ask <proveedor> <pregunta>.\nLa disponibilidad depende de la cuenta del proveedor.",
+  "pong": "¡Pong!",
+  "latency": "Latencia de respuesta: {milliseconds} ms.",
+  "version": "Versión: {version}",
+  "empty_prompt": "Escribe una pregunta después de /ask o del nombre del proveedor.",
+  "rate_limit": "Espera {seconds} segundos entre preguntas.",
+  "provider_error": "No se pudo completar la solicitud. Inténtalo más tarde o contacta con el operador del bot."
+}

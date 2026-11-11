@@ -1,0 +1,11 @@
+{
+  "welcome": "Cześć! Każde pytanie jest wysyłane osobno; nie zapisuję historii rozmowy. Możesz zadawać pytanie co {seconds} sekund.",
+  "help": "Polecenia:\n/start - Powitanie\n/help - Instrukcje\n/ping - Sprawdź dostępność\n/ask [dostawca] <pytanie> - Zadaj pytanie\n/providers - Lista dostawców i modeli\n/version - Pokaż wersję\n\nPrzykład: /ask Czym jest AI?",
+  "providers": "Domyślny dostawca: {default}\nDostawcy ze skonfigurowanym kluczem API:\n{providers}\n\nUżyj /ask <dostawca> <pytanie>.\nDostępność zależy od konta u dostawcy.",
+  "pong": "Pong!",
+  "latency": "Opóźnienie odpowiedzi: {milliseconds} ms.",
+  "version": "Wersja: {version}",
+  "empty_prompt": "Wpisz pytanie po /ask lub nazwie dostawcy.",
+  "rate_limit": "Odczekaj {seconds} sekund między pytaniami.",
+  "provider_error": "Nie udało się wykonać żądania. Spróbuj ponownie później lub skontaktuj się z operatorem bota."
+}

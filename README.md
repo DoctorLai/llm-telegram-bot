@@ -1,210 +1,207 @@
-![image](https://github.com/user-attachments/assets/957d966b-df81-4589-b12a-7c894277e05d)
-
-
 # Telegram AI Bot
 
-This is a Telegram bot that uses OpenAI (and other LLM providers) to answer questions, with support for rate limiting, retry functionality, inline buttons, chat continuity, and configurable API URLs. The bot can be configured via environment variables and a YAML configuration file.
+[![CI](https://github.com/doctorlai/llm-telegram-bot/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/doctorlai/llm-telegram-bot/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.11%2B-3776ab)](https://www.python.org/downloads/)
+[![Privacy](https://img.shields.io/badge/privacy-data%20flow-blue)](PRIVACY.md)
+[![Security policy](https://img.shields.io/badge/security-policy-blue)](SECURITY.md)
+[![Last commit](https://img.shields.io/github/last-commit/doctorlai/llm-telegram-bot/main)](https://github.com/doctorlai/llm-telegram-bot/commits/main)
+[![License](https://img.shields.io/github/license/doctorlai/llm-telegram-bot)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/doctorlai/llm-telegram-bot)](https://github.com/doctorlai/llm-telegram-bot/stargazers)
+[![Code style: Ruff](https://img.shields.io/badge/code%20style-Ruff-d7ff64)](https://docs.astral.sh/ruff/)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/doctorlai/llm-telegram-bot)](https://github.com/doctorlai/llm-telegram-bot/graphs/commit-activity)
+[![Watchers](https://img.shields.io/github/watchers/doctorlai/llm-telegram-bot)](https://github.com/doctorlai/llm-telegram-bot/watchers)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](CONTRIBUTING.md)
+[![Python percentage](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fdoctorlai%2Fllm-telegram-bot%2Fbadges%2Fpython.json)](https://github.com/doctorlai/llm-telegram-bot/tree/badges)
+[![Repository size](https://img.shields.io/github/repo-size/doctorlai/llm-telegram-bot)](https://github.com/doctorlai/llm-telegram-bot)
+[![Top code language](https://img.shields.io/github/languages/top/doctorlai/llm-telegram-bot)](https://github.com/doctorlai/llm-telegram-bot)
+[![Bot locales](https://img.shields.io/badge/bot%20locales-25-blue)](lang/README.md)
+[![Open PRs](https://img.shields.io/github/issues-pr/doctorlai/llm-telegram-bot)](https://github.com/doctorlai/llm-telegram-bot/pulls)
+[![Forks](https://img.shields.io/github/forks/doctorlai/llm-telegram-bot)](https://github.com/doctorlai/llm-telegram-bot/forks)
+[![Open issues](https://img.shields.io/github/issues/doctorlai/llm-telegram-bot)](https://github.com/doctorlai/llm-telegram-bot/issues)
+[![Node.js for development](https://img.shields.io/badge/node%20%28dev%29-%3E%3D22-339933)](https://nodejs.org/)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/doctorlai/llm-telegram-bot)
 
-You can add telegram bot here: https://t.me/justyy_llm_bot
+A self-hosted Python bot that answers Telegram questions using Grok, OpenAI, or another OpenAI-compatible chat-completions endpoint. **Version: 2026-11-11.**
 
-Please consider buying me a coffee to support the development and running cost of the telegram bot:
+[Quick start](#quick-start) · [Commands](#commands) · [Configuration](#configuration) · [Build and distribute](#build-and-distribute) · [Development](#development)
 
-<a rel="nofollow" href="http://steemyy.com/out/buymecoffee" target="_blank"><img src="https://user-images.githubusercontent.com/1764434/161362754-c45a85d3-5c80-4e10-b05c-62af49291d0b.png" alt="Buy me a Coffee"/></a>
+The existing public bot is [@justyy_llm_bot](https://t.me/justyy_llm_bot); its availability, deployed version, and privacy practices are controlled by its operator.
 
----
+## What it does
 
-## Features
+- `/ask` selects a configured provider or uses the default (Grok).
+- `/providers` lists providers with configured keys and their model IDs, without exposing credentials.
+- Asynchronous requests have a configurable timeout; users have a configurable cooldown.
+- Long replies are split within Telegram's message limit, including emoji and other Unicode text.
+- Bot messages follow the user's Telegram language in [25 JSON catalogs](lang/README.md), including separate Simplified and Traditional Chinese translations.
+- `/ping` checks connectivity; `/version` reports the date-based application version.
+- `--check-config` validates local settings before you start the bot, without contacting any API.
 
-- **Rate Limiting**: Users are limited to one query every 30 seconds.
-- **Chat Continuity**: Memory cache stores user conversations for context.
-- **Inline Buttons**: Allows retrying a query, asking a new question, or clearing memory.
-- **Configurable OpenAI API URL**: Easily switch between different compatible LLM providers.
-- **Typing Indicator**: Simulates a "typing..." message while processing the query.
+Questions are independent: no conversation history, retry buttons, or memory-clearing buttons are implemented. The bot does not write prompts or answers to its application logs. Telegram and the selected provider still receive message content; read [PRIVACY.md](PRIVACY.md).
 
----
+## Quick start
 
-## Commands
-
-- `/start` - Sends a welcome message and bot instructions.
-- `/help` - Displays the list of available commands.
-- `!ping` - Checks if the bot is online.
-- `!ask [model] [prompt]` - Ask a question to the bot (e.g., `!ask openai What is AI?`).
-- Inline buttons:
-  - **Retry**: Retry the previous query.
-  - **New Ask**: Ask a new question.
-  - **Clear Memory**: Clears the stored chat memory.
-
----
-
-## Requirements
-
-- **Python**: Version 3.8 or higher.
-- **Telegram Bot API Token**: You can get it by creating a bot via [BotFather](https://core.telegram.org/bots#botfather).
-- **OpenAI API Key**: You'll need a valid OpenAI API key.
-- **Grok API Key (Optional)**: For using the Grok model.
-- **Docker**: For running the bot in a containerized environment.
-
----
-
-## Setup
-
-### 1. Clone the repository
-
-Clone this repository to your local machine:
+You need Python **3.11 or newer**, a [BotFather](https://t.me/BotFather) token, and an API key for your chosen provider. Model names in the sample configuration are examples inherited from the earlier bot; select a model currently available to your provider account.
 
 ```bash
-git clone https://github.com/your-repo/telegram-ai-bot.git  
-cd telegram-ai-bot
+git clone https://github.com/doctorlai/llm-telegram-bot.git
+cd llm-telegram-bot
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+cp .env.example .env
 ```
 
-### 2. Configure Environment Variables
+On Windows PowerShell, activate with `.\.venv\Scripts\Activate.ps1` and copy with `Copy-Item .env.example .env`.
 
-Create a `.env` file in the root of the project with the following variables:
+Edit `.env` and set:
+
+```dotenv
+YOUR_TELEGRAM_BOT_API_TOKEN=your-telegram-token
+YOUR_GROK_API_KEY=your-grok-key
+YOUR_OPENAI_API_KEY=
+```
+
+The default provider is `grok`, so its key is required. To use only OpenAI, set `llms.default_model: openai` in [config.yaml](config.yaml) and supply `YOUR_OPENAI_API_KEY` instead. Unused providers may have empty or unset keys.
 
 ```bash
-YOUR_TELEGRAM_BOT_API_TOKEN=your_telegram_bot_token  
-YOUR_OPENAI_API_KEY=your_openai_api_key  
-YOUR_GROK_API_KEY=your_grok_api_key  
-OPENAI_API_URL=https://api.gptapi.us/v1/chat/completions  # Example custom URL
-```
-
-### 3. Configure the `config.yaml`
-
-In the [config.yaml](./config.yaml) file, specify your bot's settings and which LLM providers you wish to use (OpenAI by default):
-
-```yaml
-rate_limit: 10
-telegram:
-  token: ${YOUR_TELEGRAM_BOT_API_TOKEN}
-
-llms:
-  default_model: grok # can be 'openai' or 'grok'
-
-  providers:
-    openai:
-      api_url:  https://api.openai.com/v1/chat/completions
-      api_key: ${YOUR_OPENAI_API_KEY}
-      model: gpt-3.5-turbo
-      temperature: 0.7
-      max_tokens: 1500
-      role: "You are a helpful assistant (open ai). Answer the user's questions as accurately as possible. You are a large language model trained by OpenAI. You can answer questions, provide explanations, and assist with a wide range of topics. Your goal is to be helpful and informative. You are created by @justyy who is a steem witness."
-
-    grok:
-      api_url: https://api.x.ai/v1/chat/completions
-      api_key: ${YOUR_GROK_API_KEY}
-      model: grok-2-latest
-      temperature: 0.7
-      max_tokens: 1500
-      role: "You are a helpful assistant (grok). Answer the user's questions as accurately as possible. You are a large language model trained by Grok. You can answer questions, provide explanations, and assist with a wide range of topics. Your goal is to be helpful and informative. You are created by @justyy who is a steem witness."    
-```
----
-
-## Running the Bot
-
-### 1. Install Dependencies
-
-Create a virtual environment (optional but recommended) and install the dependencies:
-
-```bash
-python -m venv venv  
-source venv/bin/activate  # For Linux/macOS  
-venv\Scripts\activate  # For Windows
-pip install -r requirements.txt
-```
-
-### 2. Run the Bot
-
-You can run the bot directly with the following command:
-
-```bash
+python bot.py --check-config
 python bot.py
 ```
 
-### 3. Run the Bot Using Docker
+The config check validates required settings, not live credentials or model availability. Running the bot uses long polling; no public HTTP port or webhook is needed. Stop with Ctrl+C. Do not run two polling instances with the same Telegram token.
 
-You can also run the bot in a Docker container. Follow these steps:
+## Commands
 
-1. **Build the Docker Image:**
+| Command | Behavior |
+| --- | --- |
+| `/start` | Welcome message and commands |
+| `/help` | Command reference |
+| `/ping` | Pong and the time taken to send the first reply |
+| `/ask What is AI?` | Ask the default provider |
+| `/ask openai What is AI?` | Ask the provider named `openai` |
+| `/ask grok What is AI?` | Ask the provider named `grok` |
+| `/providers` | List configured providers and models; identify the default |
+| `/version` | Show the date-based version |
+
+Use `/`, not `!`. A configured provider name at the beginning of a question selects that provider; otherwise the entire text is sent to the default provider. A provider name without a question is rejected without using the cooldown.
+
+`/providers` reads local configuration, not the provider's account API. A listed model can still fail if a key has expired, a quota is exhausted, or the model is unavailable to that account.
+
+In groups, send commands addressed to the bot when needed, such as `/ask@your_bot What is AI?`. Replies are visible to the chat. The application does not implement a user allowlist or a global spending cap; review provider quotas before making a bot public.
+
+## Configuration
+
+[config.yaml](config.yaml) is the configuration source. `${VARIABLE}` references are expanded from the environment. `.env` is loaded from the configuration file's directory without overriding existing environment variables.
+
+An unset variable used as an entire value is treated as missing. Expansion happens once: literal dollar signs in supplied credentials or system prompts are not rejected or interpreted a second time.
+
+| Setting | Meaning |
+| --- | --- |
+| `telegram.token` | Required Telegram bot token |
+| `rate_limit` | Required per-user seconds between nonempty questions; sample value `10`, `0` disables the cooldown |
+| `request_timeout` | HTTP timeout in seconds for connect/read/write/pool operations; default `30`, minimum `0.1` |
+| `llms.default_model` | Default **provider name**, despite the historical setting name |
+| `llms.providers.<name>.api_url` | Full HTTP(S) chat-completions endpoint, including `/v1/chat/completions` |
+| `api_key` | Bearer token; required at startup for the default provider |
+| `model` | Model ID accepted by that provider |
+| `role` | System message sent with each question |
+| `temperature` | Number between `0` and `2`; provider-specific limits may be narrower |
+| `max_tokens` | Positive integer output-token limit |
+
+Provider names must be lowercase and contain no spaces. Both built-in providers use the same chat-completions request format. The OpenAI URL defaults to `https://api.openai.com/v1/chat/completions`; custom gateways must be configured explicitly. Changing this URL changes who receives your key and prompts.
+
+The HTTP timeout is an inactivity timeout per network operation, not a hard end-to-end deadline. Failed provider requests still use the cooldown to limit repeated paid requests. Expired cooldown entries are pruned on the next nonempty question.
+
+Use another configuration file or print the version without credentials:
 
 ```bash
-docker build -t telegram-bot .
+python bot.py --config /path/to/config.yaml
+python bot.py --config /path/to/config.yaml --check-config
+python bot.py --version
 ```
 
-2. **Run the Docker Container:**
+## Build and distribute
+
+This repository is a Telegram bot, **not a Chrome extension**. There is no browser manifest, Web Store listing, user count, or rating. Its ZIP is a source distribution for self-hosting, not a Web Store upload.
+
+With the development environment below installed:
 
 ```bash
-docker run -d \
- --name telegram-bot \
- --env-file .env \
- -v `pwd`/config.yaml:/app/config.yaml \
-telegram-bot
+npm run build       # source ZIP + SHA-256 checksum + Docker image
+npm run build:zip   # source ZIP + checksum only; no Docker required
 ```
 
-Specify `-d` to detach the container.
+Outputs are `dist/llm-telegram-bot-2026-11-11.zip`, its `.zip.sha256` checksum, and the Docker image `llm-telegram-bot:local`. The [CI build](.github/workflows/ci.yml) makes only the ZIP and checksum available as downloadable artifacts; it does not upload coverage reports.
 
----
+The archive includes runtime code, all translations, configuration templates, docs, and development tools/tests. Files are allowlisted; `.env`, Git metadata, virtual environments, caches, and coverage output are excluded. The build rejects symlinks and literal credentials in `config.yaml`. Review source files before distributing them: this is not a general-purpose secret scanner.
 
-## Docker Setup (Optional)
+Extract the ZIP into a new directory, then follow Quick start from the virtual-environment step instead of cloning. Python dependencies are not bundled. On Linux, verify the downloaded files with:
 
-### Dockerfile
-
-The bot is containerized using Docker. The `Dockerfile` provided ensures that all dependencies are installed and the bot runs seamlessly.
-
-```Dockerfile
-FROM python:3.9-slim
-
-# Set the working directory  
-WORKDIR /app
-
-# Copy the requirements file  
-COPY requirements.txt .
-
-# Install dependencies  
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the bot's source code  
-COPY . .
-
-# Set environment variables  
-ENV TELEGRAM_API_TOKEN=${YOUR_TELEGRAM_BOT_API_TOKEN}  
-ENV OPENAI_API_KEY=${YOUR_OPENAI_API_KEY}  
-ENV GROK_API_KEY=${YOUR_GROK_API_KEY}  
-ENV OPENAI_API_URL=${OPENAI_API_URL}
-
-# Run the bot  
-CMD ["python", "bot.py"]
+```bash
+sha256sum --check llm-telegram-bot-2026-11-11.zip.sha256
 ```
 
----
+## Docker
 
-## Troubleshooting
+```bash
+docker build -t llm-telegram-bot .
+docker run --rm --name llm-telegram-bot \
+  --env-file .env \
+  --mount type=bind,source="$(pwd)/config.yaml",target=/app/config.yaml,readonly \
+  llm-telegram-bot
+```
 
-### 1. **Bot Not Responding**
+The image uses Python 3.11 and an unprivileged user. Only runtime files are copied into it; `.env`, tests, Git metadata, and coverage reports are excluded. Keep credentials in the runtime environment, not literal YAML values or the image. Add `-d --restart unless-stopped` and omit `--rm` for a persistent deployment.
 
-- Double-check your `.env` file to ensure the correct values are set for your API tokens and URLs.
-- Ensure that you have installed all required dependencies with `pip install -r requirements.txt`.
+There is no browser UI, dark-mode CSS, browser storage, or GitHub Pages deployment.
 
-### 2. **Rate Limiting Issue**
+## Development
 
-If you're hitting rate limits for OpenAI or another API, make sure you’re not making too many requests in a short period of time (you’re limited to one request every 30 seconds per user).
+The npm commands use an activated virtual environment when present, otherwise the project's `.venv`, then `python3` or `python` on `PATH`. Activation is not required when using `.venv`; no system `python` alias is needed. Node.js is only a task runner, not a bot dependency. Node 22+ is supported; [.nvmrc](.nvmrc) selects Node 24.
 
-### 3. **Memory Cache Clearing**
+```bash
+python3 -m venv .venv    # once, if you have not created it already
+.venv/bin/python -m pip install -r requirements-dev.txt
+nvm use                 # optional, if nvm is installed
+npm ci                  # no npm dependencies
+npm run check           # all checks + ZIP + Docker build
+```
 
-If you encounter issues with stored memory, use the **Clear Memory** inline button to reset the memory cache for a user.
+On Windows, create the environment with `py -3 -m venv .venv` and install with `.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt`. npm does not install Python dependencies. Native Python commands outside npm still require activation or an explicit interpreter path.
 
----
+| Command | Checks / action |
+| --- | --- |
+| `npm run format` | Format Python and apply Ruff fixes |
+| `npm run format:check` | Check formatting without changing files |
+| `npm run lint` | Ruff and strict mypy |
+| `npm run test` | Offline tests with mocked provider and Telegram APIs |
+| `npm run coverage` | Tests, HTML/XML/JSON reports, and minimum 80% for each metric |
+| `npm run build` | Build the source ZIP/checksum and runnable Docker image |
+| `npm run build:zip` | Build only the source ZIP/checksum |
+| `npm run build:docker` | Build only the Docker image |
+| `npm run check` | Formatting, lint, types, tests, coverage, ZIP, and Docker build |
+| `npm run ci` | Alias for the full check; distinct from the `npm ci` install command |
+| `npm run check:python` | All Python checks without requiring Docker |
+| `npm run config:check` | Validate local bot configuration without network calls |
+| `npm start` | Run the bot |
 
-## License
+See [CONTRIBUTING.md](CONTRIBUTING.md) for native Python commands, translation checks, and GitHub permissions. CI tests Python 3.11, 3.12, 3.13, and 3.14. Coverage remains a local/CI pass-fail gate: at least 80% for each measured metric. There are no coverage uploads, PR coverage comments, or README coverage badges.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+The dynamic Python-percentage badge is generated from GitHub language byte counts and committed only to the `badges` branch. It becomes available after the first successful Badges workflow on `main`; no automated commit is made to protected `main`. The top-language badge describes source code, not human translations.
 
-## Support me
-If you like this and want to support me in continuous development, you can do the following:
+## Project information
+
+- [Contributing](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
+- [Support](SUPPORT.md)
+- [Security policy](SECURITY.md)
+- [Privacy and data flow](PRIVACY.md)
+- [MIT license](LICENSE)
+
+## Support the maintainer
+
 - [Buy me a coffee](https://justyy.com/out/bmc)
-- [Sponsor me](https://github.com/sponsors/DoctorLai)
-- [Vote me as a witness](https://steemyy.com/witness-voting/?witness=justyy&action=approve)
-- [Set me a Witness Proxy if you are too lazy to vote](https://steemyy.com/witness-voting/?witness=justyy&action=proxy)
-
-<a rel="nofollow" href="http://steemyy.com/out/buymecoffee" target="_blank"><img src="https://user-images.githubusercontent.com/1764434/161362754-c45a85d3-5c80-4e10-b05c-62af49291d0b.png" alt="Buy me a Coffee"/></a>
-
----
+- [Sponsor on GitHub](https://github.com/sponsors/DoctorLai)
+- [Vote for the maintainer as a Steem witness](https://steemyy.com/witness-voting/?witness=justyy&action=approve)
+- [Set a Steem witness proxy](https://steemyy.com/witness-voting/?witness=justyy&action=proxy)

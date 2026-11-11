@@ -1,0 +1,11 @@
+{
+  "welcome": "안녕하세요! 질문은 각각 독립적으로 전송되며 대화 기록을 저장하지 않습니다. {seconds}초마다 질문할 수 있습니다.",
+  "help": "명령어:\n/start - 환영 메시지\n/help - 사용 방법\n/ping - 접속 확인\n/ask [제공업체] <질문> - 질문하기\n/providers - 제공업체와 모델 목록\n/version - 버전 확인\n\n예: /ask AI란 무엇인가요?",
+  "providers": "기본 제공업체: {default}\nAPI 키가 설정된 제공업체:\n{providers}\n\n/ask <제공업체> <질문>을 사용하세요.\n사용 가능 여부는 제공업체 계정에 따라 다릅니다.",
+  "pong": "온라인입니다!",
+  "latency": "응답 지연: {milliseconds}밀리초.",
+  "version": "버전: {version}",
+  "empty_prompt": "/ask 또는 제공업체 이름 뒤에 질문을 입력하세요.",
+  "rate_limit": "질문 사이에 {seconds}초를 기다려 주세요.",
+  "provider_error": "요청을 완료하지 못했습니다. 나중에 다시 시도하거나 봇 운영자에게 문의하세요."
+}

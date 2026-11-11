@@ -1,0 +1,24 @@
+{
+  "name": "llm-telegram-bot",
+  "private": true,
+  "license": "MIT",
+  "description": "Development shortcuts for the Python Telegram bot; not an npm package.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node scripts/run-python.cjs bot.py",
+    "config:check": "node scripts/run-python.cjs bot.py --check-config",
+    "format": "node scripts/run-python.cjs -m ruff format . && node scripts/run-python.cjs -m ruff check --fix .",
+    "format:check": "node scripts/run-python.cjs -m ruff format --check .",
+    "lint": "node scripts/run-python.cjs -m ruff check . && node scripts/run-python.cjs -m mypy",
+    "test": "node scripts/run-python.cjs -m pytest",
+    "coverage": "node scripts/run-python.cjs -m scripts.coverage_report",
+    "build": "npm run build:zip && npm run build:docker",
+    "build:zip": "node scripts/run-python.cjs -m scripts.build_release",
+    "build:docker": "docker build --tag llm-telegram-bot:local .",
+    "check:python": "npm run format:check && npm run lint && npm run coverage",
+    "check": "npm run check:python && npm run build",
+    "ci": "npm run check"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "welcome": "Merhaba! Her soru ayrı gönderilir; sohbet geçmişini saklamam. Her {seconds} saniyede bir soru sorabilirsiniz.",
+  "help": "Komutlar:\n/start - Karşılama\n/help - Talimatlar\n/ping - Erişilebilirliği kontrol et\n/ask [sağlayıcı] <soru> - Soru sor\n/providers - Sağlayıcıları ve modelleri listele\n/version - Sürümü göster\n\nÖrnek: /ask Yapay zekâ nedir?",
+  "providers": "Varsayılan sağlayıcı: {default}\nAPI anahtarı yapılandırılmış sağlayıcılar:\n{providers}\n\n/ask <sağlayıcı> <soru> kullanın.\nKullanılabilirlik sağlayıcı hesabına bağlıdır.",
+  "pong": "Çevrimiçiyim!",
+  "latency": "Yanıt gecikmesi: {milliseconds} ms.",
+  "version": "Sürüm: {version}",
+  "empty_prompt": "/ask veya sağlayıcı adından sonra bir soru yazın.",
+  "rate_limit": "Sorular arasında {seconds} saniye bekleyin.",
+  "provider_error": "İstek tamamlanamadı. Daha sonra tekrar deneyin veya bot yöneticisiyle iletişime geçin."
+}
