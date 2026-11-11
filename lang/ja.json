@@ -1,0 +1,11 @@
+{
+  "welcome": "こんにちは！各質問は個別に送信され、チャット履歴は保存しません。{seconds} 秒ごとに質問できます。",
+  "help": "コマンド：\n/start - あいさつ\n/help - 使い方\n/ping - 接続確認\n/ask [プロバイダー] <質問> - 質問する\n/providers - プロバイダーとモデルの一覧\n/version - バージョン表示\n\n例：/ask AIとは何ですか？",
+  "providers": "既定のプロバイダー：{default}\nAPIキーが設定されているプロバイダー：\n{providers}\n\n/ask <プロバイダー> <質問> を使ってください。\n利用可否はプロバイダーのアカウントによります。",
+  "pong": "オンラインです！",
+  "latency": "応答時間：{milliseconds} ミリ秒。",
+  "version": "バージョン：{version}",
+  "empty_prompt": "/ask またはプロバイダー名の後に質問を入力してください。",
+  "rate_limit": "質問の間に {seconds} 秒お待ちください。",
+  "provider_error": "リクエストを完了できませんでした。後でもう一度試すか、ボットの運営者にお問い合わせください。"
+}

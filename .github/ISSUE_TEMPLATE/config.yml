@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private vulnerability report
+    url: https://github.com/doctorlai/llm-telegram-bot/security/advisories/new
+    about: Do not disclose vulnerabilities or credentials in a public issue.
+  - name: Support and troubleshooting
+    url: https://github.com/doctorlai/llm-telegram-bot/blob/main/SUPPORT.md
+    about: Read the setup and troubleshooting guidance first.

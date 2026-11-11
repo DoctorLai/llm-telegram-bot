@@ -1,0 +1,11 @@
+{
+  "welcome": "你好！每個問題都會獨立傳送，我不會儲存聊天記錄。每隔 {seconds} 秒可以提問一次。",
+  "help": "指令：\n/start - 歡迎訊息\n/help - 使用說明\n/ping - 檢查是否在線\n/ask [服務商] <問題> - 提問\n/providers - 查看服務商與模型\n/version - 查看版本\n\n範例：/ask 什麼是人工智慧？",
+  "providers": "預設服務商：{default}\n已設定 API 金鑰的服務商：\n{providers}\n\n使用 /ask <服務商> <問題>。\n可用性取決於服務商帳戶。",
+  "pong": "在線！",
+  "latency": "回覆延遲：{milliseconds} 毫秒。",
+  "version": "版本：{version}",
+  "empty_prompt": "請在 /ask 或服務商名稱後輸入問題。",
+  "rate_limit": "兩次提問之間請等待 {seconds} 秒。",
+  "provider_error": "無法完成請求。請稍後再試或聯絡機器人營運者。"
+}

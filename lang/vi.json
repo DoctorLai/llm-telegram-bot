@@ -1,0 +1,11 @@
+{
+  "welcome": "Xin chào! Mỗi câu hỏi được gửi riêng; tôi không lưu lịch sử trò chuyện. Bạn có thể hỏi mỗi {seconds} giây.",
+  "help": "Lệnh:\n/start - Chào mừng\n/help - Hướng dẫn\n/ping - Kiểm tra trạng thái\n/ask [nhà_cung_cấp] <câu_hỏi> - Đặt câu hỏi\n/providers - Xem nhà cung cấp và mô hình\n/version - Xem phiên bản\n\nVí dụ: /ask AI là gì?",
+  "providers": "Nhà cung cấp mặc định: {default}\nNhà cung cấp đã cấu hình khóa API:\n{providers}\n\nDùng /ask <nhà_cung_cấp> <câu_hỏi>.\nKhả năng sử dụng phụ thuộc vào tài khoản nhà cung cấp.",
+  "pong": "Đang trực tuyến!",
+  "latency": "Độ trễ phản hồi: {milliseconds} ms.",
+  "version": "Phiên bản: {version}",
+  "empty_prompt": "Nhập câu hỏi sau /ask hoặc tên nhà cung cấp.",
+  "rate_limit": "Vui lòng đợi {seconds} giây giữa các câu hỏi.",
+  "provider_error": "Không thể hoàn tất yêu cầu. Hãy thử lại sau hoặc liên hệ người vận hành bot."
+}

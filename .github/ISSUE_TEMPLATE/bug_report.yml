@@ -1,0 +1,34 @@
+name: Bug report
+description: Report a reproducible problem without credentials or private conversations.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For vulnerabilities, follow SECURITY.md instead of opening a public issue.
+        Remove bot tokens, API keys, personal data, and private messages from all examples.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: Include expected behavior and the actual result.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Use a minimal example with dummy credentials.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Bot version and Python version
+      description: Run python bot.py --version and python --version.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and sanitized logs
+      description: OS, Docker or local installation, provider name, and error category. Never paste .env.

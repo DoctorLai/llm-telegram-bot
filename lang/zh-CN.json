@@ -1,0 +1,11 @@
+{
+  "welcome": "你好！每个问题都会独立发送，我不会保存聊天记录。每隔 {seconds} 秒可以提问一次。",
+  "help": "命令：\n/start - 欢迎信息\n/help - 使用说明\n/ping - 检查是否在线\n/ask [服务商] <问题> - 提问\n/providers - 查看服务商和模型\n/version - 查看版本\n\n示例：/ask 什么是人工智能？",
+  "providers": "默认服务商：{default}\n已配置 API 密钥的服务商：\n{providers}\n\n使用 /ask <服务商> <问题>。\n可用性取决于服务商账户。",
+  "pong": "在线！",
+  "latency": "回复延迟：{milliseconds} 毫秒。",
+  "version": "版本：{version}",
+  "empty_prompt": "请在 /ask 或服务商名称后输入问题。",
+  "rate_limit": "两次提问之间请等待 {seconds} 秒。",
+  "provider_error": "无法完成请求。请稍后重试或联系机器人运营者。"
+}
