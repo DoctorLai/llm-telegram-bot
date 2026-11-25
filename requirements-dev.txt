@@ -1,8 +1,8 @@
 -r requirements.txt
-coverage==7.17.2
+coverage==7.17.4
 mypy==2.4.1
 pytest==9.2.0
-pytest-asyncio==1.4.1.post1
+pytest-asyncio==1.5.0
 pytest-cov==7.1.0
-ruff==0.17.4
-types-PyYAML==6.0.12.20261111
+ruff==0.17.6
+types-PyYAML==6.0.12.20261113
